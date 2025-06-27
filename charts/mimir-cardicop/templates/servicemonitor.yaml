@@ -1,0 +1,15 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ include "mimir-cardicop.fullname" . }}
+  labels:
+    release: prometheus
+    {{- include "mimir-cardicop.labels" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "mimir-cardicop.selectorLabels" . | nindent 6 }}
+  endpoints:
+    - port: http
+      interval: 1m
+      path: /metrics

@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "mimir-cardicop.fullname" . }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    {{- include "mimir-cardicop.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "mimir-cardicop.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "mimir-cardicop.selectorLabels" . | nindent 8 }}
+    spec:
+      serviceAccountName: {{ include "mimir-cardicop.serviceAccountName" . }}
+      containers:
+        - name: exporter
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: {{ .Values.service.port }}
+              name: http
+          env:
+            {{- range $key, $val := .Values.env }}
+              - name: {{ $key }}
+                value: "{{ $val }}"
+            {{- end }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
