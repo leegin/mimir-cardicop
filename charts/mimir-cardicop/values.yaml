@@ -1,0 +1,62 @@
+replicaCount: 1
+
+namespace: kube-monitoring
+labels:
+  app: mimir-cardicop
+  env: prod
+  org: platform
+  pod: infrastructure
+  release: infra-observability-prometheus
+  subpod: observability
+  superpod: platform
+  tier: t2
+
+
+image:
+  repository: asia.gcr.io/gw-backend-production/observability/mimir-cardicop
+  tag: v0.5
+  pullPolicy: IfNotPresent
+
+imagePullSecrets: []
+nameOverride: "mimir-cardicop"
+fullnameOverride: "mimir-cardicop"
+
+serviceAccount:
+  create: true
+  name: "mimir-cardicop"
+
+rbac:
+  create: true
+
+service:
+  type: ClusterIP
+  port: 8000
+
+resources:
+  limits:
+    cpu: 300m
+    memory: 500Mi
+  requests:
+    cpu: 200m
+    memory: 250Mi
+
+nodeSelector: {}
+tolerations: []
+affinity: {}
+
+env:
+  GRAFANA_URL: "http://10.1.12.17:80"
+  GRAFANA_ADMIN_USER: "admin"
+  GRAFANA_ADMIN_PASSWORD: "grafana@123"
+  STORE_GATEWAY_URL: "http://grafana-mimir-store-gateway.kube-monitoring-grafana-mimir:8080"
+  MIMIR_QUERY_URL: "https://grafana-mimir-query-frontend.growwinfra.in"
+  MIMIR_RULER_URL: "http://grafana-mimir-ruler.kube-monitoring-grafana-mimir:8080"
+  MIMIR_TENANT_ID: "infra-org"
+  LOKI_QUERY_METRIC_NAME: metric:query:count15s
+  LOKI_QUERY_LOOKBACK_DAYS: 7
+  SERVICE_ACCOUNT_NAME: mimirtool-service-account
+  EXPORTER_PORT: 8000
+  EXPORT_INTERVAL_SECONDS: 86400
+  TOKEN_EXPIRY_HOURS: 1
+
+
