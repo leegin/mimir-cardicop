@@ -1,4 +1,6 @@
-## 🚀 Overview
+![mimir-cardicop logo](assets/logo.png)
+
+# 🚀 Overview
 
 mimir-cardicop is an open-source Prometheus exporter that helps you find unused, high-cardinality metrics in your Grafana Mimir deployment.
 
@@ -18,7 +20,7 @@ It mimics Grafana Cloud’s cardinality management dashboards, letting you:
 
 You can deploy mimir-cardicop in Kubernetes using the included Helm chart.
 
-## Prerequisites
+### Prerequisites
 
 * Grafana Mimir (with Store Gateway, Ruler, and Query Frontend)
 
