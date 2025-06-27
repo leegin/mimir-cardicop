@@ -4,16 +4,11 @@ namespace: kube-monitoring
 labels:
   app: mimir-cardicop
   env: prod
-  org: platform
-  pod: infrastructure
-  release: infra-observability-prometheus
-  subpod: observability
-  superpod: platform
   tier: t2
 
 
 image:
-  repository: asia.gcr.io/gw-backend-production/observability/mimir-cardicop
+  repository: asia.gcr.io/observability/mimir-cardicop
   tag: v0.5
   pullPolicy: IfNotPresent
 
@@ -45,11 +40,11 @@ tolerations: []
 affinity: {}
 
 env:
-  GRAFANA_URL: "http://10.1.12.17:80"
+  GRAFANA_URL: "http://10.10.120.170:80"
   GRAFANA_ADMIN_USER: "admin"
-  GRAFANA_ADMIN_PASSWORD: "grafana@123"
+  GRAFANA_ADMIN_PASSWORD: "grafana"
   STORE_GATEWAY_URL: "http://grafana-mimir-store-gateway.kube-monitoring-grafana-mimir:8080"
-  MIMIR_QUERY_URL: "https://grafana-mimir-query-frontend.growwinfra.in"
+  MIMIR_QUERY_URL: "https://grafana-mimir-query-frontend.infra.in"
   MIMIR_RULER_URL: "http://grafana-mimir-ruler.kube-monitoring-grafana-mimir:8080"
   MIMIR_TENANT_ID: "infra-org"
   LOKI_QUERY_METRIC_NAME: metric:query:count15s
