@@ -1,4 +1,4 @@
-![mimir-cardicop logo](assets/logo.png)
+![mimir-cardicop logo](assets/logo-new.png)
 
 # 🚀 Overview
 
