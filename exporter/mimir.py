@@ -11,14 +11,16 @@ logger = logging.getLogger(__name__)
 
 def get_tenants(store_gateway_url):
     """Fetch all tenants listed in Mimir's store-gateway UI."""
-    response = requests.get(store_gateway_url)
-    if response.ok:
+    try:
+        response = requests.get(store_gateway_url)
+        response.raise_for_status()
         soup = BeautifulSoup(response.text, "html.parser")
         tenants = [a.text for a in soup.select("tbody tr td a") if not (a.text.endswith("-dr") or "fake" in a.text.lower())]
         logger.info(f"Fetched {len(tenants)} tenants")
         return tenants
-    logger.warning(f"Failed to fetch tenants from store-gateway")
-    return []
+    except (requests.RequestException, Exception) as e:
+        logger.info(f"Error fetching tenants: {e}")
+        return []
 
 def get_metrics_for_tenant(tenant_id):
     """Query Mimir cardinality API for all metrics of a tenant."""

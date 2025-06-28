@@ -19,10 +19,12 @@ def check_metric_queried(metric):
         "end": get_unix_timestamp(0),
         "step": "1d"
     }
-    response = requests.get(MIMIR_QUERY_URL, params=params, headers={"X-Scope-OrgID": MIMIR_TENANT_ID})
-    if response.ok:
-        queried = len(response.json().get("data", {}).get("result", [])) > 0
-        logger.info(f"Metric {metric} queried in logs: {queried}")
-        return queried
-    logger.warning(f"Failed to check Loki usage for metric {metric}")
-    return False
+    try:
+        response = requests.get(MIMIR_QUERY_URL, params=params, headers={"X-Scope-OrgID": MIMIR_TENANT_ID})
+        if response.ok:
+            queried = len(response.json().get("data", {}).get("result", [])) > 0
+            logger.info(f"Metric {metric} queried in logs: {queried}")
+            return queried
+    except (requests.RequestException, Exception) as e:
+        logger.info(f"Error checking Mimir for metric {metric}: {e}")
+        return False
