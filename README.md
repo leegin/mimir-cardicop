@@ -1,31 +1,34 @@
-🚀 Overview
+![mimir-cardicop logo](assets/logo.png)
+
+# 🚀 Overview
 
 mimir-cardicop is an open-source Prometheus exporter that helps you find unused, high-cardinality metrics in your Grafana Mimir deployment.
 
 It mimics Grafana Cloud’s cardinality management dashboards, letting you:
 
-Enumerate all tenants in Mimir
+* Enumerate all tenants in Mimir
 
-Fetch active metrics
+* Fetch active metrics
 
-Analyze usage in recording/alerting rules
+* Analyze usage in recording/alerting rules
 
-Check if metrics are being queried (via Loki)
+* Check if metrics are being queried (via Loki)
 
-Expose a Prometheus metric to mark each as used or unused
+* Expose a Prometheus metric to mark each as used or unused
 
-⚙️ Setup
+## ⚙️ Setup
+
 You can deploy mimir-cardicop in Kubernetes using the included Helm chart.
 
-Prerequisites
+### Prerequisites
 
-Grafana Mimir (with Store Gateway, Ruler, and Query Frontend)
+* Grafana Mimir (with Store Gateway, Ruler, and Query Frontend)
 
-Grafana Loki (optional, for query analysis)
+* Grafana Loki (for query analysis)
 
-Kubernetes cluster
+* Kubernetes cluster
 
-Helm 3.x
+* Helm 3.x
 
 1️⃣ Clone the repository
 ```
@@ -61,7 +64,7 @@ Then install:
 helm install mimir-cardicop charts/mimir-cardicop/ -n your-namespace
 ```
 
-🧭 How it works
+## 🧭 How it works
 
 ✅ 1. Discover Tenants
 Scrapes Mimir Store Gateway’s /tenants page to list all tenants.
@@ -83,7 +86,8 @@ metric_usage_status{tenant_id, metric_name} 1|0
 ```
 
 
-📜 Dashboards
+## 📜 Dashboards
+
 Grafana dashboard JSON for visualizing usage is included in:
 
 ```
@@ -91,14 +95,18 @@ dashboards/
   mimir-cardicop-dashboard.json
 ```
 
-🎯 How to use:
+## 🎯 How to use:
+
 ✅ Go to Grafana → Dashboards → Import
+
 ✅ Upload the JSON file
+
 ✅ Set your Prometheus data source
 
 You can customize it further to match your setup.
 
-📜 Recording Rules
+## 📜 Recording Rules
+
 To detect if a metric is being queried in logs (via Loki), deploy a recording rule in Mimir.
 
 Example rule is in:
@@ -122,24 +130,32 @@ groups:
           )) by (query)
 ```
 
-🎯 How to apply:
-✅ Adapt labels/selectors to match your Loki deployment
-✅ Upload this recording rule to your Mimir Ruler
-✅ Ensure it runs at regular intervals
+## 🎯 How to apply:
+
+✅ Adapt labels/selectors to match your Loki deployment.
+
+✅ Upload this recording rule to your Mimir Ruler.
+
+✅ Ensure it runs at regular intervals.
 
 This rule makes the metric:query:count15s series available, which mimir-cardicop uses to check if a metric has been queried recently.
 
-🤝 How to Contribute
+## 🤝 How to Contribute
 
 We welcome contributions!
 
 1️⃣ Fork the repo
+
 2️⃣ Create a feature branch (git checkout -b feature/your-feature)
+
 3️⃣ Make your changes
+
 4️⃣ Commit and push (git push origin feature/your-feature)
+
 5️⃣ Open a Pull Request
 
 ✅ Follow PEP8
+
 ✅ Add docstrings and tests if introducing new functionality
 
 
