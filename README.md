@@ -51,13 +51,16 @@ env:
   GRAFANA_URL: "http://grafana.yourdomain.com"
   GRAFANA_ADMIN_USER: "admin"
   GRAFANA_ADMIN_PASSWORD: "yourpassword"
-  STORE_GATEWAY_URL: "http://mimir-store-gateway.namespace:8080/store-gateway/tenants"
-  MIMIR_CARDINALITY_URL: "https://mimir-query-frontend/api/v1/cardinality/label_values"
-  MIMIR_QUERY_URL: "https://mimir-query-frontend/api/v1/query_range"
-  MIMIR_RULER_URL: "http://mimir-ruler.namespace:8080"
-  LOKI_QUERY_TENANT_ID: "your-loki-tenant"
-  LOKI_QUERY_METRIC_NAME: "metric:query:count15s"
+  STORE_GATEWAY_URL: "http://mimir-store-gateway.namespace:8080"
+  MIMIR_QUERY_URL: "https://grafana-mimir-query-frontend.namespace:8080"
+  MIMIR_RULER_URL: "http://grafana-mimir-ruler.namespace:8080"
+  MIMIR_TENANT_ID: "yourtenant"
+  LOKI_QUERY_METRIC_NAME: metric:query:count15s
   LOKI_QUERY_LOOKBACK_DAYS: 7
+  SERVICE_ACCOUNT_NAME: mimirtool-service-account
+  EXPORTER_PORT: 8000
+  EXPORT_INTERVAL_SECONDS: 86400
+  TOKEN_EXPIRY_HOURS: 1
 ```
 
 Then install:
