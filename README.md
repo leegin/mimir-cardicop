@@ -67,19 +67,24 @@ helm install mimir-cardicop charts/mimir-cardicop/ -n your-namespace
 ## 🧭 How it works
 
 ✅ 1. Discover Tenants
+
 Scrapes Mimir Store Gateway’s /tenants page to list all tenants.
 
 ✅ 2. Grafana Rule Analysis
+
 Uses Grafana admin APIs to enumerate organizations, switches context, and runs mimirtool analyze grafana.
 
 ✅ 3. Mimir Rule & Prometheus Analysis
+
 Runs mimirtool analyze ruler and analyze prometheus for each tenant, collecting metrics from rules.
 
 ✅ 4. Loki Query Analysis
-Runs queries against Loki logs to see if a metric was recently used (within configurable lookback).
+
+Runs queries against Loki logs to see if a metric was recently used (within a configurable lookback).
 
 ✅ 5. Exporter Metrics
-Publishes /metrics endpoint with:
+
+Publishes `/metrics` endpoint with:
 
 ```
 metric_usage_status{tenant_id, metric_name} 1|0
