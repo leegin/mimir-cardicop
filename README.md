@@ -24,7 +24,7 @@ You can deploy mimir-cardicop in Kubernetes using the included Helm chart.
 
 ### Prerequisites
 
-* Grafana Mimir (with Store Gateway, Ruler, and Query Frontend)
+* Grafana Mimir (with Store Gateway, Ruler, and Query Frontend) with cardinality analysis enabled.
 
 * Grafana Loki (for query analysis)
 
@@ -92,6 +92,16 @@ Publishes `/metrics` endpoint with:
 metric_usage_status{tenant_id, metric_name} 1|0
 ```
 
+## 📌 Cardinality Analysis Setup in Grafana Mimir
+
+> For the Mimir Cardicop tool and dashboard to work properly—especially the cardinality analysis panels—your Grafana Mimir deployment must have cardinality analysis enabled.
+
+> This is not on by default in all deployments.
+
+> ➡️ How to enable it:
+
+> Follow Grafana's official docs:
+👉 [Grafana Mimir Cardinality Management Configuration](https://grafana.com/docs/enterprise-metrics/latest/manage/tenant-management/cardinality-management/#configuration)
 
 ## 📜 Dashboards
 
