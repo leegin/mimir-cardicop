@@ -93,20 +93,98 @@ metric_usage_status{tenant_id, metric_name} 1|0
 
 ## 📜 Dashboards
 
-Grafana dashboard JSON for visualizing usage is included in:
+This repository includes Grafana dashboard JSON files under the dashboards/ folder. These dashboards visualize cardinality analysis results for Grafana Mimir tenants.
+
+#### ⚠️ 1️⃣ Install the JSON API Datasource Plugin
+
+To connect Grafana to the Mimir cardinality API, you must install the Grafana JSON Datasource plugin.
+
+This plugin enables Grafana to query the cardinality HTTP API in Mimir and render the results in dashboards.
+
+Install via Grafana CLI:
 
 ```
-dashboards/
-  mimir-cardicop-dashboard.json
+grafana-cli plugins install marcusolsson-json-datasource
 ```
 
-## 🎯 How to use:
+Or install it from the Grafana UI Plugin catalog.
+
+✅ Make sure the plugin is enabled in your Grafana instance before importing the dashboards.
+
+#### ⚠️ 2️⃣ Create the Cardinality API Datasource
+
+Once the plugin is installed, you must create a new Grafana data source of type JSON API.
+
+Name: Mimir Cardinality API (or any meaningful name you choose)
+
+Type: JSON API
+
+URL:
+```
+<MIMIR-QUERY-FRONTEND-URL>/prometheus/api/v1/cardinality
+```
+
+Auth/Headers: Configure if needed (e.g., tokens, basic auth, etc.)
+
+This datasource will be used specifically to query the Mimir cardinality API.
+
+#### ⚠️ 3️⃣ Use in Conjunction with Prometheus Datasource
+
+These dashboards require both:
+
+  * The Prometheus datasource (for metrics)
+
+  * The JSON API datasource (for cardinality API)
+
+✅ When importing the dashboard, select Prometheus for the metrics panels and your Mimir Cardinality API JSON datasource for the cardinality panels.
+
+This ensures:
+
+  * Regular metrics come from your Prometheus instance.
+
+  * Cardinality analysis panels call Mimir’s cardinality API endpoint directly.
+
+#### ⚠️ 4️⃣ Important: Update the tenant variable!
+
+Mimir does not provide a built-in metric listing all tenants. The only way to retrieve the tenant list is to query the Store Gateway API:
+```
+GET /store-gateway/tenants
+```
+
+✅ You should run this API to get the list of tenants your cluster has.
+
+✅ Then update the tenant variable in each dashboard JSON file with the comma-separated list of tenant IDs.
+
+Example:
+
+```
+"options": [
+  "tenant1,tenant2,tenant3"
+]
+```
+
+This ensures that dashboards correctly show data for all relevant tenants.
+
+### How to get the tenant list
+
+You can run:
+```
+curl <STORE_GATEWAY_URL>/store-gateway/tenants
+```
+
+Then, parse the output to produce the comma-separated string for the dashboard variable.
+
+### Why is this needed?
+
+Grafana Mimir currently has no metric to list all tenants automatically. Using the Store Gateway endpoint is the recommended approach.
+
+### 🎯 How to use:
 
 ✅ Go to Grafana → Dashboards → Import
 
-✅ Upload the JSON file
+✅ Upload the JSON file.
 
-✅ Set your Prometheus data source
+✅ Set your Prometheus and JSON API data sources.
 
 You can customize it further to match your setup.
 
@@ -117,25 +195,11 @@ To detect if a metric is being queried in logs (via Loki), deploy a recording ru
 Example rule is in:
 
 ```
-recording-rules/
+recording_rules/
   metric-query-recording-rule.yaml
 ```
 
-It typically looks like:
-
-```
-groups:
-  - name: metric-query-logs
-    interval: 5m
-    rules:
-      - record: metric:query:count15s
-        expr: |
-          sum(count_over_time(
-            {app="loki", job="loki"} |~ "query=~\".*\"" [15s]
-          )) by (query)
-```
-
-## 🎯 How to apply:
+### 🎯 How to apply:
 
 ✅ Adapt labels/selectors to match your Loki deployment.
 
