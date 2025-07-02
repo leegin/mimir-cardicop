@@ -1,6 +1,6 @@
 replicaCount: 1
 
-namespace: kube-monitoring
+namespace: monitoring
 labels:
   app: mimir-cardicop
   env: prod
@@ -40,13 +40,13 @@ tolerations: []
 affinity: {}
 
 env:
-  GRAFANA_URL: "http://10.10.120.170:80"
+  GRAFANA_URL: "http://grafana.yourdomain.com"
   GRAFANA_ADMIN_USER: "admin"
-  GRAFANA_ADMIN_PASSWORD: "grafana"
-  STORE_GATEWAY_URL: "http://grafana-mimir-store-gateway.kube-monitoring-grafana-mimir:8080"
-  MIMIR_QUERY_URL: "https://grafana-mimir-query-frontend.infra.in"
-  MIMIR_RULER_URL: "http://grafana-mimir-ruler.kube-monitoring-grafana-mimir:8080"
-  MIMIR_TENANT_ID: "infra-org"
+  GRAFANA_ADMIN_PASSWORD: "yourpassword"
+  STORE_GATEWAY_URL: "http://mimir-store-gateway.namespace:8080"
+  MIMIR_QUERY_URL: "https://grafana-mimir-query-frontend.namespace:8080"
+  MIMIR_RULER_URL: "http://grafana-mimir-ruler.namespace:8080"
+  MIMIR_TENANT_ID: "yourtenant"
   LOKI_QUERY_METRIC_NAME: metric:query:count15s
   LOKI_QUERY_LOOKBACK_DAYS: 7
   SERVICE_ACCOUNT_NAME: mimirtool-service-account
