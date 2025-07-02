@@ -16,6 +16,8 @@ It mimics Grafana Cloud’s cardinality management dashboards, letting you:
 
 * Expose a Prometheus metric to mark each as used or unused
 
+  <img width="1725" alt="image" src="https://github.com/user-attachments/assets/f580951a-cdf7-4590-a6b6-c37c236e92ad" />
+
 ## ⚙️ Setup
 
 You can deploy mimir-cardicop in Kubernetes using the included Helm chart.
