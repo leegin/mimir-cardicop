@@ -1,0 +1,7 @@
+    groups:
+    - name: "Count of query of a metric"
+      interval: 15s
+      rules:
+      - record: metric:query:count15s
+        expr: |
+          sum(count_over_time({cluster="<MIMIR-CLUSTER-NAME>", workload="grafana-mimir-query-frontend", container="query-frontend"} |= `handler.go` | logfmt | param_query=~".+"[15s])) by (param_query)
