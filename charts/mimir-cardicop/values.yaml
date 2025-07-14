@@ -8,8 +8,8 @@ labels:
 
 
 image:
-  repository: ghcr.io/leegin/mimir-cardicop-v0.1
-  tag: latest
+  repository: ghcr.io/leegin/mimir-cardicop
+  tag: v0.4
   pullPolicy: IfNotPresent
 
 imagePullSecrets: []
@@ -53,5 +53,6 @@ env:
   EXPORTER_PORT: 8000
   EXPORT_INTERVAL_SECONDS: 86400
   TOKEN_EXPIRY_HOURS: 1
+  SSL_VERIFY: "false"
 
 

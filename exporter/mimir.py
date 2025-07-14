@@ -2,7 +2,7 @@ import subprocess
 import requests
 import json
 import logging
-from exporter.config import MIMIR_CARDINALITY_URL, MIMIR_RULER_URL, BASE_MIMIR_QUERY_URL
+from exporter.config import MIMIR_CARDINALITY_URL, MIMIR_RULER_URL, BASE_MIMIR_QUERY_URL, SSL_VERIFY
 from bs4 import BeautifulSoup
 import sys
 
@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 def get_tenants(store_gateway_url):
     """Fetch all tenants listed in Mimir's store-gateway UI."""
     try:
-        response = requests.get(store_gateway_url)
+        response = requests.get(store_gateway_url,verify=SSL_VERIFY)
         response.raise_for_status()
         soup = BeautifulSoup(response.text, "html.parser")
         tenants = [a.text for a in soup.select("tbody tr td a") if not (a.text.endswith("-dr") or "fake" in a.text.lower())]
@@ -27,7 +27,7 @@ def get_metrics_for_tenant(tenant_id):
     logger.info(f"Fetching metrics from Mimir for tenant: {tenant_id}")
     response = requests.get(
         f"{MIMIR_CARDINALITY_URL}?label_names[]=__name__&limit=100",
-        headers={"X-Scope-OrgID": tenant_id, "Content-Type": "application/json"}
+        headers={"X-Scope-OrgID": tenant_id, "Content-Type": "application/json"},verify=SSL_VERIFY
     )
     if response.ok:
         data = response.json()

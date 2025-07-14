@@ -31,3 +31,4 @@ SERVICE_ACCOUNT_NAME = required_env("SERVICE_ACCOUNT_NAME")
 TOKEN_EXPIRY_HOURS = int(os.getenv("TOKEN_EXPIRY_HOURS", "1"))
 EXPORTER_PORT = int(os.getenv("EXPORTER_PORT", "8000"))
 EXPORT_INTERVAL_SECONDS = int(os.getenv("EXPORT_INTERVAL_SECONDS", "86400"))
+SSL_VERIFY = os.getenv("SSL_VERIFY", "true").lower() == "true"

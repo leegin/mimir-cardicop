@@ -1,7 +1,7 @@
 import requests
 import datetime
 import logging
-from exporter.config import MIMIR_QUERY_URL, LOKI_QUERY_LOOKBACK_DAYS, LOKI_QUERY_METRIC_NAME, MIMIR_TENANT_ID
+from exporter.config import MIMIR_QUERY_URL, LOKI_QUERY_LOOKBACK_DAYS, LOKI_QUERY_METRIC_NAME, MIMIR_TENANT_ID, SSL_VERIFY
 import sys
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s",handlers=[logging.StreamHandler(sys.stdout)])
@@ -20,7 +20,7 @@ def check_metric_queried(metric):
         "step": "1d"
     }
     try:
-        response = requests.get(MIMIR_QUERY_URL, params=params, headers={"X-Scope-OrgID": MIMIR_TENANT_ID})
+        response = requests.get(MIMIR_QUERY_URL, params=params, headers={"X-Scope-OrgID": MIMIR_TENANT_ID}, verify=SSL_VERIFY)
         if response.ok:
             queried = len(response.json().get("data", {}).get("result", [])) > 0
             logger.info(f"Metric {metric} queried in logs: {queried}")
