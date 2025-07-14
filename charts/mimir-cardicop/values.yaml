@@ -8,8 +8,8 @@ labels:
 
 
 image:
-  repository: asia.gcr.io/observability/mimir-cardicop
-  tag: v0.5
+  repository: ghcr.io/leegin/mimir-cardicop-v0.1
+  tag: latest
   pullPolicy: IfNotPresent
 
 imagePullSecrets: []
